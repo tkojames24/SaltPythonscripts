@@ -1,0 +1,20 @@
+#!py
+# import salt tools and json
+import salt.client
+import json
+
+# this command allows you to run salt commands on master
+local = salt.client.LocalClient()
+
+# runs salt salt command "*" test.version which gets salt minion VN
+dump = json.dumps(local.cmd('*','test.version'))
+data = json.loads(dump)
+
+# Creates a file for minions that need to be updated
+text_file = open("Minion's needing updates", "w")
+
+# Goes through salt data and prints out of data VN
+vn = raw_input("Please enter VN:  ")
+for k, v in data.items():
+    if v != vn:
+        text_file.write(k + "\n")
